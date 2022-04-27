@@ -15,6 +15,9 @@ function App() {
   const [password, setPassword] = useState<string>("test_pass");
   const [auth, setAuth] = useState<boolean>(false);
   
+  const [newUsername, createUsername] = useState<string>("new_name");
+  const [newPassword, createPassword] = useState<string>("new_pass");
+
   const fileInput = React.createRef<HTMLInputElement>();
   const [photo, setPhoto] = useState("");
 
@@ -70,8 +73,19 @@ function App() {
       // 2. Connect the click functionality of that button to call this function
       // 3. Make a POST request to the endpoint and look at the response (see submit_authentication function)
       // Optional: Look at the different responses if user is already existing or if its entirely a new user, and do something with it
-
-
+      let credentials = new URLSearchParams();
+      credentials.append("username", newUsername);
+      credentials.append("password", newPassword);
+        const postData = async () => {
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: credentials
+          };
+          const response = await fetch(server_link + '/user', requestOptions);
+          console.log(response);
+      }
+      postData();
     }
 
 
@@ -95,6 +109,28 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <Typography variant="h4" justifySelf={"center"} color="primary">
+                Creating a New User
+              </Typography>
+
+      <TextField id="standard-basic" sx={{pb:2.5}} type="text" label="New Username" color="primary" variant="filled"  defaultValue="new_name"
+        onChange={event => {
+          const { value } = event.target;
+          createUsername(value);
+        }}
+      />
+      <TextField id="standard-basic" sx={{pb:2.5}} type="text" label="New Password" color="primary" variant="filled" defaultValue="new_pass"
+        onChange={event => {
+          const { value } = event.target;
+          createPassword(value);
+        }}
+      />
+      <Button  color="primary" variant="contained"   onClick={() => {
+        create_user();
+      }}>Create New User</Button>
+
+      <br/>
+      
       <Typography variant="h4" justifySelf={"center"} color="primary">
                 Server Logins
               </Typography>
