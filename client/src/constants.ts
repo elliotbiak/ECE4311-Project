@@ -1,1 +1,1 @@
-export const server_link = "http://localhost:55657"
+export const server_link = "http://cloud.gpquanli.com:55657"
